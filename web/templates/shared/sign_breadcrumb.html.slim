@@ -1,0 +1,6 @@
+br
+
+ol.breadcrumb
+  li = link dgettext("sign", "Sign in"), to: session_path(@conn, :new)
+  li = link dgettext("sign", "Sign up"), to: registration_path(@conn, :new)
+  li = link dgettext("sign", "Back to site"), to: dashboard_path(@conn, :index)

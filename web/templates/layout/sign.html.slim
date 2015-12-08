@@ -1,0 +1,22 @@
+doctype html
+html lang="en"
+  head
+    meta charset="utf-8"
+    meta content="IE=edge" http-equiv="X-UA-Compatible"
+    meta content="width=device-width, initial-scale=1" name="viewport"
+    meta content="" name="description"
+    meta content="" name="author"
+    title = assigns[:page_title] || "No title - Exbugs"
+    link rel="stylesheet" href=static_path(@conn,"/css/app.css")
+    link rel="stylesheet" href=static_path(@conn,"/css/sign.css")
+  body
+    .notifications.top-right
+    
+    .container
+      .row
+        = render Exbugs.SharedView, "flash.html", conn: @conn
+        = @inner
+
+    script src="/js/jquery.min.js"
+    script src="/js/bootstrap.min.js"
+    script src=static_path(@conn,"/js/app.js")

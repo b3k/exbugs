@@ -1,0 +1,9 @@
+li = link dgettext("dashboard", "Dashboard"), to: dashboard_path(@conn, :index)
+
+li.dropdown
+  a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
+    = dgettext("companies", "Compaies")
+    span.caret
+  ul.dropdown-menu
+    li = link dgettext("companies", "Create new"), to: company_path(@conn, :new)
+    li = link dgettext("companies", "All companies"), to: company_path(@conn, :index)

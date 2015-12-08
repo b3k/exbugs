@@ -1,0 +1,5 @@
+= form_for @changeset, @action, [multipart: true], fn f ->
+  = text_input f, :username
+  = file_input f, :avatar
+  = submit "Update"
+= end

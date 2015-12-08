@@ -1,0 +1,15 @@
+li.dropdown
+  = if logged_in?(@conn) do
+    a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
+      = gettext("Logged as %{username}", username: current_user(@conn).username)
+      span.caret
+    ul.dropdown-menu
+      li = link dgettext("settings", "Settings"), to: profile_path(@conn, :edit)
+      li = link dgettext("sign", "Logout"), to: session_path(@conn, :delete)
+  - else
+    a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
+      = gettext("You are guest")
+      span.caret
+    ul.dropdown-menu
+      li = link dgettext("sign", "Sign in"), to: session_path(@conn, :new)
+      li = link dgettext("sign", "Sign up"), to: registration_path(@conn, :new)

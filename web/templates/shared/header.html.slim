@@ -1,0 +1,15 @@
+nav.navbar.navbar-default.navbar-fixed-top
+  .container-fluid
+    .navbar-header
+      button.navbar-toggle.collapsed aria-expanded="false" data-target="#bs-example-navbar-collapse-1" data-toggle="collapse" type="button" 
+        span.sr-only Toggle navigation
+        span.icon-bar
+        span.icon-bar
+        span.icon-bar
+      a href="/"
+        = tag(:img, src: "/images/logo_small.png", class: "navbar-brand")
+    #bs-example-navbar-collapse-1.collapse.navbar-collapse
+      ul.nav.navbar-nav
+        = render Exbugs.SharedView, "links.html", conn: @conn
+      ul.nav.navbar-nav.navbar-right
+        = render Exbugs.SharedView, "dropdown.html", conn: @conn
