@@ -8,10 +8,9 @@ defmodule Exbugs.RegistrationController do
   def new(conn, _params) do
     changeset = User.changeset(%User{})
 
-    conn
-    |> assign(:page_title, dgettext("sign", "Sign up"))
-    |> assign(:changeset, changeset)
-    |> render "new.html"
+    render conn, "new.html",
+      page_title: dgettext("sign", "Sign up"),
+      changeset: changeset
   end
 
   def create(conn, %{"user" => user_params}) do

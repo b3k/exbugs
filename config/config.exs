@@ -34,3 +34,7 @@ config :phoenix, :template_engines,
 
 # Configure default locale
 config :exbugs, Exbugs.Gettext, default_locale: "en"
+
+# Configure scrivener_html
+config :scrivener_html,
+  routes_helper: Exbugs.Router.Helpers

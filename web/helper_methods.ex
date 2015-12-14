@@ -17,4 +17,12 @@ defmodule Exbugs.HelperMethods do
       class: class
     )
   end
+
+  def show_logo(company, size \\ :small, class \\ "") do
+    tag(
+      :img,
+      src: correct_image_path(Exbugs.Logo.url({company.logo, company}, size)),
+      class: class
+    )
+  end
 end

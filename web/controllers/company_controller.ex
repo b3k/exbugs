@@ -4,18 +4,22 @@ defmodule Exbugs.CompanyController do
 
   plug :scrub_params, "company" when action in [:create, :update]
 
-  def index(conn, _params) do
-    company = Repo.all(Company)
-    render(conn, "index.html", company: company)
+  def index(conn, params) do
+    page = Company
+    |> Company.ordered
+    |> Repo.paginate(params)
+
+    render conn, "index.html",
+      page_title: dgettext("companies", "All companies"),
+      companies: page.entries
   end
 
   def new(conn, _params) do
     changeset = Company.changeset(%Company{})
 
-    conn
-    |> assign(:changeset, changeset)
-    |> assign(:page_title, dgettext("company", "New company"))
-    |> render "new.html"
+    render conn, "new.html",
+      page_title: dgettext("companies", "New company"),
+      changeset: changeset
   end
 
   def create(conn, %{"company" => company_params}) do

@@ -5,9 +5,8 @@ defmodule Exbugs.SessionController do
   plug :put_layout, "sign.html"
 
   def new(conn, _params) do
-    conn
-    |> assign(:page_title, dgettext("sign", "Sign in"))
-    |> render "new.html"
+    render conn, "new.html",
+      page_title: dgettext("sign", "Sign in")
   end
 
   def create(conn, %{"session" => session_params}) do

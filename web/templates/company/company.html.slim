@@ -1,0 +1,12 @@
+.col-md-3
+  .panel.panel-default
+    .panel-body
+      .row
+        .col-xs-2.col-md-2
+          = show_logo(@company, :small, "img-circle")
+        .col-xs-8.col-md-8
+           .div
+              = link @company.name, to: company_path(@conn, :show, @company.name)
+           .div
+             span.glyphicon.glyphicon-user 
+             = Exbugs.Company.members_count(@company)

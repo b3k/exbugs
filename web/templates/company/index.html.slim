@@ -1,0 +1,11 @@
+.container
+  .row
+    .col-md-12
+      h2 = assigns[:page_title]
+      
+      = if Enum.count(@companies) > 0 do
+        #companies
+          = for company <- @companies do
+            = render Exbugs.CompanyView, "company.html", conn: @conn, company: company
+      - else
+        = render Exbugs.SharedView, "placeholder.html"

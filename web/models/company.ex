@@ -1,6 +1,7 @@
 defmodule Exbugs.Company do
   use Exbugs.Web, :model
   use Arc.Ecto.Model
+  alias Exbugs.Member
 
   schema "companies" do
     has_many :members, Exbugs.Member
@@ -39,5 +40,26 @@ defmodule Exbugs.Company do
     |> validate_length(:full_name, max: 50)
     |> validate_length(:about, max: 250)
     |> validate_length(:location, max: 150)
+  end
+
+  after_insert :add_creator_to_members
+
+  def add_creator_to_members(changeset) do
+    add_member(changeset.model.id, changeset.changes.user_id)
+    changeset
+  end
+
+  def add_member(company_id, user_id) do
+    Exbugs.Repo.insert(%Member{company_id: company_id, user_id: user_id})
+  end
+
+  def ordered(query) do
+    from c in query,
+    order_by: [desc: c.name]
+  end
+
+  def members_count(company) do
+    members = Exbugs.Repo.all assoc(company, :members)
+    Enum.count(members)
   end
 end
