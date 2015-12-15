@@ -1,6 +1,7 @@
 defmodule Exbugs.RegistrationController do
   use Exbugs.Web, :controller
   alias Exbugs.User
+  import Exbugs.Redirects, only: [redirect_if_signed_in: 2]
 
   plug :redirect_if_signed_in
   plug :put_layout, "sign.html"
@@ -28,14 +29,6 @@ defmodule Exbugs.RegistrationController do
       {:error, changeset} ->
         conn
         |> render("new.html", changeset: changeset)
-    end
-  end
-
-  defp redirect_if_signed_in(conn, _params) do
-    if logged_in?(conn) do
-      conn |> redirect(to: "/")
-    else
-      conn
     end
   end
 end

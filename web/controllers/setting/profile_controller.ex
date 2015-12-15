@@ -1,6 +1,8 @@
 defmodule Exbugs.Setting.ProfileController do
   use Exbugs.Web, :controller
   alias Exbugs.User
+  import Exbugs.Redirects, only: [redirect_unless_signed_in: 2]
+
   plug :redirect_unless_signed_in
 
   def edit(conn, _params) do
@@ -29,14 +31,6 @@ defmodule Exbugs.Setting.ProfileController do
         |> assign(:user, user)
         |> assign(:changeset, changeset)
         |> render "edit.html"
-    end
-  end
-
-  defp redirect_unless_signed_in(conn, _params) do
-    if logged_in?(conn) do
-      conn
-    else
-      conn |> redirect(to: "/")
     end
   end
 end

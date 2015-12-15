@@ -1,7 +1,9 @@
 defmodule Exbugs.CompanyController do
   use Exbugs.Web, :controller
   alias Exbugs.Company
+  import Exbugs.Redirects, only: [redirect_unless_signed_in: 2]
 
+  plug :redirect_unless_signed_in when not(action in [:index, :show])
   plug :scrub_params, "company" when action in [:create, :update]
 
   def index(conn, params) do

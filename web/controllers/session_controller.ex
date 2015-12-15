@@ -1,5 +1,6 @@
 defmodule Exbugs.SessionController do
   use Exbugs.Web, :controller
+  import Exbugs.Redirects, only: [redirect_if_signed_in: 2]
 
   plug :redirect_if_signed_in when action in [:new, :create]
   plug :put_layout, "sign.html"
@@ -29,13 +30,5 @@ defmodule Exbugs.SessionController do
     |> delete_session(:current_user)
     |> put_flash(:info, dgettext("sign", "Logged out"))
     |> redirect(to: "/")
-  end
-
-  defp redirect_if_signed_in(conn, _params) do
-    if logged_in?(conn) do
-      conn |> redirect(to: "/")
-    else
-      conn
-    end
   end
 end
