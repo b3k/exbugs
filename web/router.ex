@@ -25,7 +25,7 @@ defmodule Exbugs.Router do
     resources "/registrations", RegistrationController, only: [:new, :create]
 
     # Companies
-    resources "/companies", CompanyController
+    resources "/companies", CompanyController, param: "name"
 
     # Dashboard
     resources "/dashboard", DashboardController, only: [:index]

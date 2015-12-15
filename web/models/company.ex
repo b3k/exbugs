@@ -4,7 +4,7 @@ defmodule Exbugs.Company do
   alias Exbugs.Member
 
   schema "companies" do
-    has_many :members, Exbugs.Member
+    has_many :members, Exbugs.Member, on_delete: :delete_all
     belongs_to :user, Exbugs.User
 
     field :name, :string
@@ -23,9 +23,11 @@ defmodule Exbugs.Company do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
+    |> update_change(:name, &String.downcase/1)
     |> unique_constraint(:name)
     |> validate_length(:name, min: 1, max: 50)
     |> validate_format(:name, ~r/\A[A-Za-z0-9_.-]+\z/)
+    |> validate_exclusion(:name, ~w(new create update edit delete))
     |> validate_number(:visible, greater_than: -1, less_than: 2)
   end
 

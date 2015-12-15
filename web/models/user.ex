@@ -5,8 +5,8 @@ defmodule Exbugs.User do
   @default_language "en"
 
   schema "users" do
-    has_many :members, Exbugs.Member
-    has_many :companies, Exbugs.Company
+    has_many :members, Exbugs.Member, on_delete: :delete_all
+    has_many :companies, Exbugs.Company, on_delete: :delete_all
 
     field :username, :string
     field :email, :string
@@ -36,6 +36,8 @@ defmodule Exbugs.User do
   def changeset(user, params \\ %{}) do
     user
     |> cast(params, @required_fields, @optional_fields)
+    |> update_change(:username, &String.downcase/1)
+    |> update_change(:email, &String.downcase/1)
     |> unique_constraint(:username)
     |> validate_length(:username, min: 2, max: 50)
     |> unique_constraint(:email)

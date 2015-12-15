@@ -32,23 +32,29 @@ defmodule Exbugs.CompanyController do
         |> put_flash(:info, "Company created successfully.")
         |> redirect(to: company_path(conn, :index))
       {:error, changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        render conn, "new.html",
+          page_title: dgettext("companies", "New company"),
+          changeset: changeset
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    company = Repo.get!(Company, id)
+  def show(conn, %{"name" => name}) do
+    company = Repo.get_by!(Company, name: name)
     render(conn, "show.html", company: company)
   end
 
-  def edit(conn, %{"id" => id}) do
-    company = Repo.get!(Company, id)
+  def edit(conn, %{"name" => name}) do
+    company = Repo.get_by!(Company, name: name)
     changeset = Company.changeset(company)
-    render(conn, "edit.html", company: company, changeset: changeset)
+
+    render conn, "edit.html",
+      page_title: dgettext("companies", "Company settings"),
+      company: company,
+      changeset: changeset
   end
 
-  def update(conn, %{"id" => id, "company" => company_params}) do
-    company = Repo.get!(Company, id)
+  def update(conn, %{"name" => name, "company" => company_params}) do
+    company = Repo.get_by!(Company, name: name)
     changeset = Company.changeset(company, company_params)
 
     case Repo.update(changeset) do
@@ -57,12 +63,15 @@ defmodule Exbugs.CompanyController do
         |> put_flash(:info, "Company updated successfully.")
         |> redirect(to: company_path(conn, :show, company))
       {:error, changeset} ->
-        render(conn, "edit.html", company: company, changeset: changeset)
+        render conn, "edit.html",
+          page_title: dgettext("companies", "Company settings"),
+          company: company,
+          changeset: changeset
     end
   end
 
-  def delete(conn, %{"id" => id}) do
-    company = Repo.get!(Company, id)
+  def delete(conn, %{"name" => name}) do
+    company = Repo.get_by!(Company, name: name)
 
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
