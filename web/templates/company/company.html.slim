@@ -7,6 +7,6 @@
         .col-xs-8.col-md-8
            .div
               = link @company.name, to: company_path(@conn, :show, @company.name)
-           .div
+           .div title="#{dgettext("companies", "Members")}"
              span.glyphicon.glyphicon-user 
              = Exbugs.Company.members_count(@company)

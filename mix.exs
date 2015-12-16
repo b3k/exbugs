@@ -40,7 +40,7 @@ defmodule Exbugs.Mixfile do
      {:gettext, "~> 0.8"},
      {:arc_ecto, "~> 0.2.0"},
      {:credo, "~> 0.1.9", only: [:dev, :test]},
-     {:ecto_gettext, "~> 0.1.3"},
+     {:ecto_gettext, "~> 0.1.4"},
      {:scrivener, "~> 1.0"},
      {:scrivener_html, "~> 1.0"}]
   end

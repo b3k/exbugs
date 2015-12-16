@@ -3,11 +3,11 @@
 
   .well
     .form-group
-      = label f, :name, show_attribute("name"), class: "control-label"
-      = text_input f, :name, class: "form-control", placeholder: show_attribute("name"), required: true
+      = label f, :name, show_attribute(:name), class: "control-label"
+      = text_input f, :name, class: "form-control", placeholder: show_attribute(:name), required: true
 
     .form-group
-      = label f, :visible, show_attribute("visible"), class: "control-label"
+      = label f, :visible, show_attribute(:visible), class: "control-label"
       = select f, :visible, [{dgettext("company", "Public"), 1}, {dgettext("company", "Private"), 0}], class: "form-control"
 
     .form-group

@@ -1,9 +1,9 @@
 = form_for @conn, session_path(@conn, :create), [as: :session, class: "form-signin"], fn f ->
   h2.form-signin-heading = dgettext "sign", "Sign in"
   
-  = email_input f, :email, class: "form-control", placeholder: show_attribute("email"), required: true
+  = email_input f, :email, class: "form-control", placeholder: show_attribute(:email), required: true
   
-  = password_input f, :password, class: "form-control", placeholder: show_attribute("password"), required: true
+  = password_input f, :password, class: "form-control", placeholder: show_attribute(:password), required: true
 
   = submit dgettext("sign", "Sign in"), class: "btn btn-lg btn-primary btn-block"
   

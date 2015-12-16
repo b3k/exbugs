@@ -6,15 +6,15 @@
     = file_input f, :avatar, class: "from-control"
   
   .form-group
-    = label f, :full_name, show_attribute("full name")
-    = text_input f, :full_name, class: "form-control", placeholder: show_attribute("full name")
+    = label f, :full_name, show_attribute(:full_name)
+    = text_input f, :full_name, class: "form-control", placeholder: show_attribute(:full_name)
   
   .form-group
-    = label f, :location, show_attribute("location")
-    = text_input f, :location, class: "form-control", placeholder: show_attribute("location")
+    = label f, :location, show_attribute(:location)
+    = text_input f, :location, class: "form-control", placeholder: show_attribute(:location)
     
   .form-group
-    = label f, :about, show_attribute("about")
-    = textarea f, :about, class: "form-control", placeholder: show_attribute("about")
+    = label f, :about, show_attribute(:about)
+    = textarea f, :about, class: "form-control", placeholder: show_attribute(:about)
   
   .form-group = submit gettext("Update"), class: "btn btn-primary" 

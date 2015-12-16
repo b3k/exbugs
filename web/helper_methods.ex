@@ -1,9 +1,9 @@
 defmodule Exbugs.HelperMethods do
   import Phoenix.HTML.Tag
+  import EctoGettext
 
   def show_attribute(attr) do
-    Gettext.dgettext(Exbugs.Gettext, "attributes", attr)
-    |> String.capitalize
+    localize_attribute(Exbugs.Gettext, attr)
   end
 
   def correct_image_path(path) do
