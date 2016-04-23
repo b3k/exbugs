@@ -1,4 +1,5 @@
 # Exbugs
+[![Build Status](https://travis-ci.org/exbugs-elixir/exbugs.svg?branch=master)](https://travis-ci.org/exbugs-elixir/exbugs)
 
 To start your Phoenix app:
 
