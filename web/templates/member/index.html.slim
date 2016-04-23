@@ -1,0 +1,11 @@
+.container
+  .row
+    .col-md-12
+      h2 = assigns[:page_title]
+      
+      = if Enum.count(@members) > 0 do
+        #members
+          = for member <- @members do
+            = render Exbugs.MemberView, "_member.html", conn: @conn, member: member
+      - else
+        = render Exbugs.SharedView, "_placeholder.html"

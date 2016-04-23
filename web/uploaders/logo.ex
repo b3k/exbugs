@@ -13,7 +13,7 @@ defmodule Exbugs.Avatar do
   end
 
   def transform(:small, _) do
-    {:convert, "-strip -thumbnail 35x35^ -gravity center -extent 35x35 -format png"}
+    {:convert, "-strip -thumbnail 44x44^ -gravity center -extent 44x44 -format png"}
   end
 
   def filename(version, _) do

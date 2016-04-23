@@ -6,6 +6,6 @@
       = if Enum.count(@companies) > 0 do
         #companies
           = for company <- @companies do
-            = render Exbugs.CompanyView, "company.html", conn: @conn, company: company
+            = render Exbugs.CompanyView, "_company.html", conn: @conn, company: company
       - else
-        = render Exbugs.SharedView, "placeholder.html"
+        = render Exbugs.SharedView, "_placeholder.html"

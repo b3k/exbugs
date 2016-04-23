@@ -1,0 +1,25 @@
+.container
+  .row
+    .col-md-8
+      .panel.panel-default
+        .panel-body
+          .media
+            .pull-left
+              = show_logo(@company, :thumb, "img-circle")
+            .media-body
+              .div
+                h2 = assigns[:page_title]
+              .div
+                = members_link(@conn, @company)
+                
+      = render Exbugs.CompanyView, "_boards.html", conn: @conn, boards: @boards, company: @company
+      = if can_manage_company?(current_user(@conn), @company) do 
+        = link dgettext("boards", "New board"), to: company_board_path(@conn, :new, @company.name), class: "btn btn-primary" 
+      
+    .col-md-4
+      = render Exbugs.CompanyView, "_members.html", members: @members, conn: @conn, company: @company
+    
+    = if can_manage_members?(current_user(@conn), @company) do
+      .col-md-4
+        = render Exbugs.CompanyView, "_add_member.html", action: company_path(@conn, :update, @company), conn: @conn, member_changeset: @member_changeset, company: @company
+  

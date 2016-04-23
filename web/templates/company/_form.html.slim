@@ -1,10 +1,9 @@
 = form_for @changeset, @action, fn f ->
-  = render Exbugs.SharedView, "validation_errors.html", changeset: @changeset, errors: f.errors
-
   .well
     .form-group
       = label f, :name, show_attribute(:name), class: "control-label"
       = text_input f, :name, class: "form-control", placeholder: show_attribute(:name), required: true
+      = error_tag f, :name
 
     .form-group
       = label f, :visible, show_attribute(:visible), class: "control-label"

@@ -1,0 +1,15 @@
+.col-md-3
+  .panel.panel-default
+    .panel-body
+      .media
+        = if can_manage_members?(current_user(@conn), @member.company) do
+          .pull-right
+            = unless @member.id == current_user(@conn).id do 
+              = link gettext("Edit"), to: company_member_path(@conn, :edit, @member.company.name, @member.id), class: "btn btn-default btn-xs"
+        .pull-left
+          = show_avatar(@member.user, :small, "img-circle")
+        .media-body
+          .div
+            = link @member.user.username, to: "/"
+          h6
+            i = @member.mark

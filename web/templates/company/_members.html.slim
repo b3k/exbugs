@@ -1,0 +1,12 @@
+.panel.panel-default
+  .panel-heading 
+    = dgettext("companies", "Members") <> " "
+    | (#{Exbugs.Company.members_count(@company)})
+  
+  .panel-body
+    .col-sm-12		
+	    = for member <- @members do
+			  .col-xs-3
+			    = show_avatar(member.user, :small, "thumbnail")
+    .pull-right     
+      = link dgettext("members", "Show all"), to: company_member_path(@conn, :index, @company.name), class: "btn btn-primary"

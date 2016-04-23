@@ -1,13 +1,17 @@
 defmodule Exbugs.Company do
   use Exbugs.Web, :model
   use Arc.Ecto.Model
-  alias Exbugs.Member
+  import Ecto.Query
+  alias Exbugs.{Member, User}
 
   schema "companies" do
     has_many :members, Exbugs.Member, on_delete: :delete_all
+    has_many :boards, Exbugs.Board, on_delete: :delete_all
+
     belongs_to :user, Exbugs.User
 
     field :name, :string
+    field :public_name, :string
     field :about, :string
     field :url, :string
     field :location, :string
@@ -17,12 +21,12 @@ defmodule Exbugs.Company do
     timestamps
   end
 
-  @required_fields ~w(name visible)
-  @optional_fields ~w(about logo url)
+  @create_required_fields ~w(name visible)
+  @create_optional_fields ~w()
 
-  def changeset(model, params \\ :empty) do
+  def create_changeset(model, params \\ :empty) do
     model
-    |> cast(params, @required_fields, @optional_fields)
+    |> cast(params, @create_required_fields, @create_optional_fields)
     |> update_change(:name, &String.downcase/1)
     |> unique_constraint(:name)
     |> validate_length(:name, min: 1, max: 50)
@@ -33,9 +37,9 @@ defmodule Exbugs.Company do
 
   # For update action
   @update_required_fields ~w(visible)
-  @update_optional_fields ~w(url about location)
+  @update_optional_fields ~w(url about location public_name)
 
-  def changeset_update(user, params \\ %{}) do
+  def update_changeset(user, params \\ %{}) do
     user
     |> cast(params, @update_required_fields, @update_optional_fields)
     |> cast_attachments(params, ~w(), ~w(logo))
@@ -44,24 +48,59 @@ defmodule Exbugs.Company do
     |> validate_length(:location, max: 150)
   end
 
-  after_insert :add_creator_to_members
+  def add_member(company) do
+    role = cond do
+      members_count(company) == 0 ->
+        "creator"
+      true ->
+        "member"
+    end
 
-  def add_creator_to_members(changeset) do
-    add_member(changeset.model.id, changeset.changes.user_id)
-    changeset
+    Exbugs.Repo.insert(%Member{company_id: company.id, user_id: company.user_id, role: role})
   end
 
-  def add_member(company_id, user_id) do
-    Exbugs.Repo.insert(%Member{company_id: company_id, user_id: user_id})
+  def add_member(company, user) do
+    case {has_member?(company, user), User.has_user?(user)} do
+      {false, true} ->
+        Exbugs.Repo.insert(%Member{company_id: company.id, user_id: user.id, role: "member"})
+      _ ->
+        false
+    end
   end
 
-  def ordered(query) do
-    from c in query,
-    order_by: [desc: c.name]
+  def ordered(companies) do
+    companies |> order_by(desc: :name)
+  end
+
+  def public?(company) do
+    company.visible == 1
+  end
+
+  def has_member?(company, user) do
+    member = Exbugs.Repo.get_by(assoc(company, :members), user_id: user.id)
+
+    case member do
+      nil ->
+        false
+      member ->
+        true
+    end
+  end
+
+  def public_only(company) do
+    company |> where(visible: 1)
   end
 
   def members_count(company) do
-    members = Exbugs.Repo.all assoc(company, :members)
-    Enum.count(members)
+    Exbugs.Repo.all(assoc(company, :members)) |> Enum.count
+  end
+
+  def show_name(company) do
+    case company.public_name do
+      nil ->
+        company.name
+      _ ->
+        "#{company.public_name} (#{company.name})"
+    end
   end
 end

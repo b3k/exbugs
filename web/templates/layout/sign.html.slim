@@ -14,8 +14,8 @@ html lang="en"
     
     .container
       .row
-        = render Exbugs.SharedView, "flash.html", conn: @conn
-        = @inner
+        = render Exbugs.SharedView, "_flash.html", conn: @conn
+        = render @view_module, @view_template, assigns
 
     script src="/js/jquery.min.js"
     script src="/js/bootstrap.min.js"

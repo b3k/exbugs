@@ -1,0 +1,13 @@
+= for board <- @boards do
+  .panel.panel-default
+    .panel-body
+      .col-xs-4 
+        = link board.name, to: company_board_path(@conn, :show, @company.name, board.name)
+        p.small = board.about
+      
+      = if can_manage_company?(current_user(@conn), @company) do
+        .pull-right
+          ul.list-inline
+            li = link gettext("Edit"), to: company_board_path(@conn, :edit, @company.name, board.name), class: "btn btn-default btn-xs"
+            li = link gettext("Delete"), to: company_board_path(@conn, :delete, @company.name, board.name), class: "btn btn-danger btn-xs", method: :delete, data: [confirm: "Are you sure?"]
+    

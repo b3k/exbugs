@@ -1,0 +1,6 @@
+.container
+  .row
+    .col-md-12
+      h2 = assigns[:page_title]
+
+      = render "_form.html", changeset: @changeset, action: company_board_path(@conn, :create, @company.name)

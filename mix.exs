@@ -30,19 +30,20 @@ defmodule Exbugs.Mixfile do
   #
   # Type `mix help deps` for examples and options.
   defp deps do
-    [{:phoenix, "~> 1.0.3"},
-     {:phoenix_ecto, "~> 1.1"},
-     {:postgrex, ">= 0.0.0"},
+    [{:phoenix, "~> 1.1"},
+     {:phoenix_ecto, "~> 2.0"},
+     {:postgrex, "~> 0.11.0"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:cowboy, "~> 1.0"},
-     {:phoenix_slim, "~> 0.4.1"},
+     {:phoenix_html, "~> 2.3"},
+     {:phoenix_slime, "~> 0.5.1"},
      {:comeonin, "~> 1.6"},
-     {:gettext, "~> 0.8"},
+     {:gettext, "~> 0.9"},
      {:arc_ecto, "~> 0.2.0"},
      {:credo, "~> 0.1.9", only: [:dev, :test]},
-     {:ecto_gettext, "~> 0.1.4"},
-     {:scrivener, "~> 1.0"},
-     {:scrivener_html, "~> 1.0"}]
+     {:scrivener, "~> 1.1.1"},
+     {:scrivener_html, "~> 1.0"}
+   ]
   end
 
   # Aliases are shortcut or tasks specific to the current project.

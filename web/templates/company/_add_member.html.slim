@@ -1,0 +1,7 @@
+.panel.panel-default
+  .panel-heading
+    = dgettext("companies", "Add member")
+  .panel-body 
+    = form_for @member_changeset, company_member_path(@conn, :create, @company.name), [class: "form-inline"], fn f ->
+      = text_input f, :username, class: "form-control", placeholder: show_attribute(:username)
+      = submit gettext("Add"), class: "btn btn-default"

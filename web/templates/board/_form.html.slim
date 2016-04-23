@@ -1,0 +1,14 @@
+= form_for @changeset, @action, fn f ->
+  .well
+    .form-group
+      = label f, :name, class: "control-label"
+      = text_input f, :name, class: "form-control"
+      = error_tag f, :name
+
+    .form-group
+      = label f, :about, class: "control-label"
+      = text_input f, :about, class: "form-control"
+      = error_tag f, :about
+
+    .form-group
+      = submit "Submit", class: "btn btn-primary"

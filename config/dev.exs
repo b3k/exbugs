@@ -35,8 +35,8 @@ config :phoenix, :stacktrace_depth, 20
 # Configure your database
 config :exbugs, Exbugs.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "pgusr",
-  password: "dddddd",
+  username: "postgres",
+  password: "postgres",
   database: "exbugs_dev",
   hostname: "localhost",
   pool_size: 10

@@ -1,15 +1,20 @@
 = form_for @changeset, registration_path(@conn, :create), fn f ->
-  = render Exbugs.SharedView, "validation_errors.html", changeset: @changeset, errors: f.errors
-  
   .form-signin
     h2.form-signin-heading = dgettext "sign", "Sign up"
     
-    = text_input f, :username, class: "form-control", placeholder: show_attribute(:username), required: true
-    
-    = email_input f, :email, class: "form-control", placeholder: show_attribute(:email), required: true
-    
-    = password_input f, :password, class: "form-control", placeholder: show_attribute(:password), required: true
+    .form-group
+      = text_input f, :username, class: "form-control", placeholder: show_attribute(:username), required: true
+      = error_tag f, :username
+      
+    .form-group
+      = email_input f, :email, class: "form-control", placeholder: show_attribute(:email), required: true
+      = error_tag f, :email
 
-    = submit dgettext("sign", "Sign up"), class: "btn btn-lg btn-primary btn-block"
+    .form-group
+      = password_input f, :password, class: "form-control", placeholder: show_attribute(:password), required: true
+      = error_tag f, :password
     
-    = render Exbugs.SharedView, "sign_breadcrumb.html", conn: @conn
+    .form-group
+      = submit dgettext("sign", "Sign up"), class: "btn btn-lg btn-primary btn-block"
+    
+    = render Exbugs.SharedView, "_sign_breadcrumb.html", conn: @conn

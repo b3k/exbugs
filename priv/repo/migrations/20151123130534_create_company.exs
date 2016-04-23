@@ -4,6 +4,7 @@ defmodule Exbugs.Repo.Migrations.CreateCompany do
   def change do
     create table(:companies) do
       add :name, :string
+      add :public_name, :string
       add :about, :string
       add :url, :string
       add :logo, :string

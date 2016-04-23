@@ -73,3 +73,7 @@
 }
 
 body { padding-top: 70px; }
+
+.form-inline > * {
+    margin: 2px !important;
+}

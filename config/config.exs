@@ -30,7 +30,8 @@ config :phoenix, :generators,
 
 # Configure template engines
 config :phoenix, :template_engines,
-  slim: PhoenixSlim.Engine
+  slim: PhoenixSlime.Engine,
+  slime: PhoenixSlime.Engine
 
 # Configure default locale
 config :exbugs, Exbugs.Gettext, default_locale: "en"

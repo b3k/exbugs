@@ -7,18 +7,18 @@ defmodule Exbugs.Setting.ProfileController do
 
   def edit(conn, _params) do
     user = Repo.get(User, current_user(conn).id)
-    changeset = User.changeset_update(user)
+    changeset = User.update_changeset(user)
 
     conn
     |> assign(:page_title, dgettext("settings", "Profile settings"))
     |> assign(:user, user)
     |> assign(:changeset, changeset)
-    |> render "edit.html"
+    |> render("edit.html")
   end
 
   def update(conn, %{"user" => user_params}) do
     user = Repo.get!(User, current_user(conn).id)
-    changeset = User.changeset_update(user, user_params)
+    changeset = User.update_changeset(user, user_params)
 
     case Repo.update(changeset) do
       {:ok, user} ->
@@ -30,7 +30,7 @@ defmodule Exbugs.Setting.ProfileController do
         |> assign(:page_title, dgettext("settings", "Profile settings"))
         |> assign(:user, user)
         |> assign(:changeset, changeset)
-        |> render "edit.html"
+        |> render("edit.html")
     end
   end
 end

@@ -2,6 +2,6 @@
   .row
     .col-md-8
       .well
-        = render "form.html", conn: @conn, changeset: @changeset, action: profile_path(@conn, :update)
+        = render "_form.html", conn: @conn, changeset: @changeset, action: profile_path(@conn, :update)
     .col-md-4
-      = render Exbugs.SettingView, "navigation.html", conn: @conn, active: :profile
+      = render Exbugs.SettingView, "_navigation.html", conn: @conn, active: :profile

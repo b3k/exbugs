@@ -1,20 +1,22 @@
 = form_for @changeset, @action, [multipart: true], fn f ->
-  = render Exbugs.SharedView, "validation_errors.html", changeset: @changeset, errors: f.errors
-  
   .form-group
     = show_avatar(current_user(@conn), :thumb, "thumbnail")
     = file_input f, :avatar, class: "from-control"
+    = error_tag f, :avatar
   
   .form-group
     = label f, :full_name, show_attribute(:full_name)
     = text_input f, :full_name, class: "form-control", placeholder: show_attribute(:full_name)
-  
+    = error_tag f, :full_name
+    
   .form-group
     = label f, :location, show_attribute(:location)
     = text_input f, :location, class: "form-control", placeholder: show_attribute(:location)
+    = error_tag f, :location
     
   .form-group
     = label f, :about, show_attribute(:about)
     = textarea f, :about, class: "form-control", placeholder: show_attribute(:about)
+    = error_tag f, :about
   
   .form-group = submit gettext("Update"), class: "btn btn-primary" 

@@ -1,8 +1,0 @@
-= if @changeset.action do
-  .alert.alert-danger.alert-dismissible role="alert" 
-    button.close aria-label="Close" data-dismiss="alert" type="button" 
-      span aria-hidden="true" &times;
-    = for {attr, message} <- localize_validations(Exbugs.Gettext, @errors) do
-      li
-        = humanize(attr) <> " "
-        = message

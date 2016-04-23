@@ -1,0 +1,5 @@
+.container
+  .row
+    .col-12-md
+      h2 = assigns[:page_title]
+      = render "_form.html", conn: @conn, changeset: @changeset, action: company_member_path(@conn, :update, @member.company.name, @member)

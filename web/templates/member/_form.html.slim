@@ -1,0 +1,14 @@
+= form_for @changeset, @action, fn f ->
+  .well
+    .form-group
+      = label f, :mark, show_attribute(:mark), class: "control-label"
+      = text_input f, :mark, class: "form-control", placeholder: show_attribute(:mark), autofocus: true
+      = error_tag f, :mark
+      
+    .form-group
+      = label f, :role, show_attribute(:role), class: "control-label"
+      = select f, :role, [{"Member", "member"}, {"Admin", "admin"}], class: "form-control"
+      = error_tag f, :role
+
+    .form-group
+      = submit gettext("Update"), class: "btn btn-primary"

@@ -7,7 +7,7 @@ defmodule Exbugs.RegistrationController do
   plug :put_layout, "sign.html"
 
   def new(conn, _params) do
-    changeset = User.changeset(%User{})
+    changeset = User.create_changeset(%User{})
 
     render conn, "new.html",
       page_title: dgettext("sign", "Sign up"),
@@ -15,7 +15,7 @@ defmodule Exbugs.RegistrationController do
   end
 
   def create(conn, %{"user" => user_params}) do
-    changeset = User.changeset(%User{}, user_params)
+    changeset = User.create_changeset(%User{}, user_params)
 
     case Exbugs.Registration.create(changeset, Exbugs.Repo) do
       {:ok, changeset} ->

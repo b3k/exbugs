@@ -1,0 +1,15 @@
+<h2>Show board</h2>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @board.name %>
+  </li>
+
+  <li>
+    <strong>About:</strong>
+    <%= @board.about %>
+  </li>
+
+</ul>

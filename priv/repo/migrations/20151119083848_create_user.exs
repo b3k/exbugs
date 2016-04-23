@@ -11,10 +11,10 @@ defmodule Exbugs.Repo.Migrations.CreateUser do
       add :about, :string, size: 250
       add :avatar, :string
       add :language, :string, size: 2
+      add :role, :string, default: "user"
       timestamps
     end
 
-    create unique_index(:users, [:email])
-    create unique_index(:users, [:username])
+    create unique_index(:users, [:email, :username])
   end
 end

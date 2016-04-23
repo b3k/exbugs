@@ -9,14 +9,14 @@ html lang="en"
     title = assigns[:page_title] || "No title - Exbugs"
     link rel="stylesheet" href=static_path(@conn,"/css/app.css")
   body
-    = render Exbugs.SharedView, "header.html", conn: @conn
+    = render Exbugs.SharedView, "_header.html", conn: @conn
     
     .container
       .row
         .col-md-12
-          = render Exbugs.SharedView, "flash.html", conn: @conn
+          = render Exbugs.SharedView, "_flash.html", conn: @conn
           
-    = @inner
+    = render @view_module, @view_template, assigns
     
     script src="/js/jquery.min.js"
     script src="/js/bootstrap.min.js"

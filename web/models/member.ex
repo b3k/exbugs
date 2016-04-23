@@ -1,24 +1,31 @@
 defmodule Exbugs.Member do
   use Exbugs.Web, :model
+  use Arc.Ecto.Model
+  import Ecto.Query
 
   schema "members" do
     belongs_to :company, Exbugs.Company
     belongs_to :user, Exbugs.User
-
+    field :mark, :string
+    field :role, :string
     timestamps
   end
 
-  @required_fields ~w()
-  @optional_fields ~w()
+  @create_required_fields ~w()
+  @create_optional_fields ~w()
 
-  @doc """
-  Creates a changeset based on the `model` and `params`.
-
-  If no params are provided, an invalid changeset is returned
-  with no validation performed.
-  """
-  def changeset(model, params \\ :empty) do
+  def create_changeset(model, params \\ :empty) do
     model
-    |> cast(params, @required_fields, @optional_fields)
+    |> cast(params, @create_required_fields, @create_optional_fields)
+  end
+
+  @update_required_fields ~w()
+  @update_optional_fields ~w(mark role)
+
+  def update_changeset(model, params \\ :empty) do
+    model
+    |> cast(params, @update_required_fields, @update_optional_fields)
+    |> validate_inclusion(:role, ~w(member admin))
+    |> validate_length(:mark, max: 50)
   end
 end
