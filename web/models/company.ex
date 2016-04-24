@@ -1,8 +1,10 @@
 defmodule Exbugs.Company do
   use Exbugs.Web, :model
   use Arc.Ecto.Model
+
   import Ecto.Query
-  alias Exbugs.{Member, User}
+
+  alias Exbugs.{Company, Member, User}
 
   schema "companies" do
     has_many :members, Exbugs.Member, on_delete: :delete_all
@@ -29,9 +31,9 @@ defmodule Exbugs.Company do
     |> cast(params, @create_required_fields, @create_optional_fields)
     |> update_change(:name, &String.downcase/1)
     |> unique_constraint(:name)
-    |> validate_length(:name, min: 1, max: 50)
+    |> validate_length(:name, min: 1, max: 20)
     |> validate_format(:name, ~r/\A[A-Za-z0-9_.-]+\z/)
-    |> validate_exclusion(:name, ~w(new create update edit delete))
+    |> validate_exclusion(:name, ~w(members boards my new create update edit delete))
     |> validate_number(:visible, greater_than: -1, less_than: 2)
   end
 
@@ -46,6 +48,19 @@ defmodule Exbugs.Company do
     |> validate_length(:full_name, max: 50)
     |> validate_length(:about, max: 250)
     |> validate_length(:location, max: 150)
+  end
+
+  def user_companies(user, limit) do
+    user_companies(user)
+      |> limit(^limit)
+      |> Exbugs.Repo.all
+  end
+
+  def user_companies(user) do
+    Company
+      |> join(:left, [c, m], m in assoc(c, :members))
+      |> where([c, m], m.user_id == ^user.id)
+      |> select([c], c)
   end
 
   def add_member(company) do

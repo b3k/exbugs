@@ -9,14 +9,14 @@ defmodule Exbugs.Redirects do
       true ->
         conn
       false ->
-        conn |> redirect(to: "/")
+        conn |> redirect(to: session_path(conn, :new))
     end
   end
 
   def redirect_if_signed_in(conn, _params) do
     case logged_in?(conn) do
       true ->
-        conn |> redirect(to: "/")
+        conn |> redirect(to: session_path(conn, :new))
       false ->
         conn
     end

@@ -29,7 +29,7 @@
   "poolboy": {:hex, :poolboy, "1.5.1"},
   "postgrex": {:hex, :postgrex, "0.11.1"},
   "ranch": {:hex, :ranch, "1.2.1"},
-  "scrivener": {:hex, :scrivener, "1.1.2"},
+  "scrivener": {:hex, :scrivener, "1.1.4"},
   "scrivener_html": {:hex, :scrivener_html, "1.0.9"},
   "slim_fast": {:hex, :slim_fast, "0.10.0"},
   "slime": {:hex, :slime, "0.11.0"}}

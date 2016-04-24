@@ -6,8 +6,10 @@ defmodule Exbugs.Member do
   schema "members" do
     belongs_to :company, Exbugs.Company
     belongs_to :user, Exbugs.User
+
     field :mark, :string
     field :role, :string
+    
     timestamps
   end
 

@@ -1,25 +1,33 @@
 defmodule Exbugs.CompanyController do
   use Exbugs.Web, :controller
 
-  alias Exbugs.Company
-  alias Exbugs.Member
+  alias Exbugs.{Company, Member}
 
   import Exbugs.Abilities, only: [can_manage_company?: 2]
   import Exbugs.Redirects, only: [redirect_unless_signed_in: 2, redirect_unless: 2, redirect_if_private: 2]
 
   plug :redirect_unless_signed_in when not(action in [:index, :show])
-  plug :redirect_if_private when not(action in [:index, :new, :create])
+  plug :redirect_if_private when not(action in [:index, :my, :new, :create])
   plug :scrub_params, "company" when action in [:create, :update]
-  plug :authorize when not(action in [:index, :show, :new, :create])
+  plug :authorize when not(action in [:index, :my, :show, :new, :create])
 
   def index(conn, params) do
     page = Company
-    |> Company.ordered
-    |> Company.public_only
-    |> Repo.paginate(params)
+      |> Company.ordered
+      |> Company.public_only
+      |> Repo.paginate(params)
 
     render conn, "index.html",
       page_title: dgettext("companies", "All companies"),
+      companies: page.entries
+  end
+
+  def my(conn, params) do
+    page = Company.user_companies(current_user(conn))
+      |> Repo.paginate(params)
+
+    render conn, "index.html",
+      page_title: dgettext("companies", "My companies"),
       companies: page.entries
   end
 

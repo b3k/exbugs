@@ -2,6 +2,8 @@ defmodule Exbugs.User do
   use Exbugs.Web, :model
   use Arc.Ecto.Model
 
+  alias Exbugs.{Member, Company}
+
   @default_language "en"
 
   schema "users" do
@@ -32,7 +34,7 @@ defmodule Exbugs.User do
     |> update_change(:username, &String.downcase/1)
     |> update_change(:email, &String.downcase/1)
     |> unique_constraint(:username)
-    |> validate_length(:username, min: 2, max: 25)
+    |> validate_length(:username, min: 2, max: 20)
     |> unique_constraint(:email)
     |> validate_length(:email, max: 100)
     |> validate_format(:email, ~r/\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i)
@@ -54,10 +56,8 @@ defmodule Exbugs.User do
 
   def has_user?(user) do
     case user do
-      nil ->
-        false
-      user ->
-        true
+      nil -> false
+      user -> true
     end
   end
 

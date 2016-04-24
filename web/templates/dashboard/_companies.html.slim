@@ -1,0 +1,8 @@
+h2 = dgettext("dashboard", "Your companies")
+
+= if Enum.count(@companies) > 0 do
+  #companies
+    = for company <- @companies do
+      = render Exbugs.CompanyView, "_company.html", conn: @conn, company: company
+- else
+  = render Exbugs.SharedView, "_placeholder.html"
