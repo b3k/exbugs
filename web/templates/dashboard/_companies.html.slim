@@ -1,5 +1,7 @@
-h2 = dgettext("dashboard", "Your companies")
-
+ul.list-inline
+  li.h4 = dgettext("dashboard", "Your companies")
+  li = link gettext("All"), to: company_path(@conn, :my), class: "btn btn-primary btn-xs" 
+  
 = if Enum.count(@companies) > 0 do
   #companies
     = for company <- @companies do
