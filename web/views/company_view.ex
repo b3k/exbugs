@@ -17,7 +17,13 @@ defmodule Exbugs.CompanyView do
      ), to: company_member_path(conn, :index, company.name)
   end
 
-  def show_name(company, :full), do: show_name(company) <> " (#{company.name})"
+  def show_name(company, :full) do
+    case company.public_name do
+      nil -> show_name(company)
+      _ -> show_name(company) <> " (#{company.name})"
+    end
+  end
+
   def show_name(company) do
     case company.public_name do
       nil -> company.name
