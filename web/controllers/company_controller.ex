@@ -24,6 +24,7 @@ defmodule Exbugs.CompanyController do
 
   def my(conn, params) do
     page = Company.user_companies(current_user(conn))
+      |> Company.ordered
       |> Repo.paginate(params)
 
     render conn, "index.html",

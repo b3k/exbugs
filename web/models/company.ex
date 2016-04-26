@@ -102,7 +102,7 @@ defmodule Exbugs.Company do
   end
 
   def ordered(companies) do
-    companies |> order_by(desc: :name)
+    companies |> order_by(asc: :name)
   end
 
   def public?(company) do

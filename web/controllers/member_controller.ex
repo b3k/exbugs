@@ -95,11 +95,11 @@ defmodule Exbugs.MemberController do
     redirect_unless(conn, can_manage_members?(current_user(conn), company))
   end
 
-  def redirect_if_edit_himself(conn, _params) do
+  defp redirect_if_edit_himself(conn, _params) do
     id = String.to_integer(conn.params["id"])
     member = Repo.get(Member, id)
     user = Repo.get(User, member.user_id)
 
-    redirect_unless(conn, id != user.id)
+    redirect_unless(conn, current_user(conn).id != user.id)
   end
 end

@@ -4,7 +4,7 @@
       .media
         = if can_manage_members?(current_user(@conn), @member.company) do
           .pull-right
-            = unless @member.id == current_user(@conn).id do 
+            = unless @member.user_id == current_user(@conn).id do 
               ul.list-inline
                 li = link gettext("Edit"), to: company_member_path(@conn, :edit, @member.company.name, @member.id), class: "btn btn-default btn-xs"
                 li = link gettext("Delete"), to: company_member_path(@conn, :delete, @member.company.name, @member.id), method: :delete, class: "btn btn-danger btn-xs", data: [confirm: "Are you sure?"]
