@@ -3,8 +3,6 @@ defmodule Exbugs.API.UserView do
 
   def render("autocomplete.json", %{users: users}) do
     users = users |> Enum.map(&(&1.username))
-    IO.inspect users
-
     %{"suggestions": users}
   end
 end
