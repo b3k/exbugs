@@ -1,0 +1,7 @@
+.container
+  .row
+    .col-md-12
+      h2 = assigns[:page_title]
+      = render "_update_form.html", conn: @conn, changeset: @changeset, action: company_path(@conn, :update, @company.name), company: @company
+      
+      .pull-right = link dgettext("companies", "Remove company"), to: company_path(@conn, :delete, @company.name), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger"

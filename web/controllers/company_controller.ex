@@ -68,7 +68,7 @@ defmodule Exbugs.CompanyController do
     member_changeset = Member.create_changeset(%Member{})
 
     render conn, "show.html",
-      page_title: Company.show_name(company),
+      page_title: Exbugs.CompanyView.show_name(company, :full),
       company: company,
       members: members,
       boards: company.boards,
@@ -93,7 +93,7 @@ defmodule Exbugs.CompanyController do
       {:ok, company} ->
         conn
         |> put_flash(:info, gettext("%{attribute} updated successfully", [attribute: "Company"]))
-        |> redirect(to: company_path(conn, :show, company))
+        |> redirect(to: company_path(conn, :show, company.name))
       {:error, changeset} ->
         render conn, "edit.html",
           page_title: dgettext("companies", "Company settings"),
@@ -105,8 +105,6 @@ defmodule Exbugs.CompanyController do
   def delete(conn, %{"name" => name}) do
     company = Repo.get_by!(Company, name: name)
 
-    # Here we use delete! (with a bang) because we expect
-    # it to always work (and if it does not, it will raise).
     Repo.delete!(company)
 
     conn

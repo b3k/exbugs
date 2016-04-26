@@ -1,11 +1,11 @@
-.col-md-4
-  .panel.panel-default
-    .panel-body
-      .media
-        .pull-left
-          = show_logo(@company, :small, "img-circle")
-        .media-body
-          .div
-            = link @company.name, to: company_path(@conn, :show, @company.name)
-          .div
-            = members_link(@conn, @company)
+
+.panel.panel-default
+  .panel-body
+    .media
+      .pull-left
+        = show_logo(@company, :small, "img-circle")
+      .media-body
+        .div
+          = link show_name(@company), to: company_path(@conn, :show, @company.name)
+        .div
+          = members_link(@conn, @company)

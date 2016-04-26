@@ -3,6 +3,7 @@ defmodule Exbugs.Company do
   use Arc.Ecto.Model
 
   import Ecto.Query
+  import Exbugs.Gettext
 
   alias Exbugs.{Company, Member, User}
 
@@ -38,16 +39,33 @@ defmodule Exbugs.Company do
   end
 
   # For update action
-  @update_required_fields ~w(visible)
+  @update_required_fields ~w(visible name)
   @update_optional_fields ~w(url about location public_name)
 
-  def update_changeset(user, params \\ %{}) do
-    user
+  def update_changeset(company, params \\ %{}) do
+    company
     |> cast(params, @update_required_fields, @update_optional_fields)
+    |> update_change(:name, &String.downcase/1)
+    |> unique_constraint(:name)
+    |> validate_length(:name, min: 1, max: 20)
+    |> validate_format(:name, ~r/\A[A-Za-z0-9_.-]+\z/)
+    |> validate_exclusion(:name, ~w(members boards my new create update edit delete))
     |> cast_attachments(params, ~w(), ~w(logo))
-    |> validate_length(:full_name, max: 50)
+    |> validate_length(:public_name, max: 20)
     |> validate_length(:about, max: 250)
-    |> validate_length(:location, max: 150)
+    |> validate_length(:location, max: 55)
+    |> validate_length(:url, min: 11, max: 150)
+    |> validate_url(:url, message: dgettext("errors", "is not a valid URL!"))
+    |> validate_number(:visible, greater_than: -1, less_than: 2)
+  end
+
+  defp validate_url(changeset, field, options \\ []) do
+    validate_change changeset, field, fn _, url ->
+      case url |> String.to_char_list |> :http_uri.parse do
+        {:ok, _} -> []
+        {:error, msg} -> [{field, options[:message] || "invalid url: #{inspect msg}"}]
+      end
+    end
   end
 
   def user_companies(user, limit) do
@@ -108,14 +126,5 @@ defmodule Exbugs.Company do
 
   def members_count(company) do
     Exbugs.Repo.all(assoc(company, :members)) |> Enum.count
-  end
-
-  def show_name(company) do
-    case company.public_name do
-      nil ->
-        company.name
-      _ ->
-        "#{company.public_name} (#{company.name})"
-    end
   end
 end

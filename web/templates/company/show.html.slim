@@ -10,16 +10,27 @@
               .div
                 h2 = assigns[:page_title]
               .div
-                = members_link(@conn, @company)
+                small
+                  = if show_url(@company), do: content_tag(:span, "", class: "span glyphicon glyphicon-link")
+                  = show_url(@company)
+                  
+                  = if @company.location do
+                     = content_tag(:span, "", class: "span glyphicon glyphicon-map-marker")
+                     = " #{@company.location}"
+                     
+                = if @company.about do
+                  br
+                  .well 
+                    i = @company.about
                 
       = render Exbugs.CompanyView, "_boards.html", conn: @conn, boards: @boards, company: @company
-      = if can_manage_company?(current_user(@conn), @company) do 
-        = link dgettext("boards", "New board"), to: company_board_path(@conn, :new, @company.name), class: "btn btn-primary" 
-      
+      = if can_manage_company?(current_user(@conn), @company) do
+        ul.list-inline
+          li = link dgettext("boards", "New board"), to: company_board_path(@conn, :new, @company.name), class: "btn btn-default" 
+          li = link dgettext("companies", "Company settings"), to: company_path(@conn, :edit, @company.name), class: "btn btn-primary"
     .col-md-4
       = render Exbugs.CompanyView, "_members.html", members: @members, conn: @conn, company: @company
-    
-    = if can_manage_members?(current_user(@conn), @company) do
-      .col-md-4
+      
+      = if can_manage_members?(current_user(@conn), @company) do
         = render Exbugs.CompanyView, "_add_member.html", action: company_path(@conn, :update, @company), conn: @conn, member_changeset: @member_changeset, company: @company
   

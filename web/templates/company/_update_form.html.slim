@@ -1,0 +1,38 @@
+= form_for @changeset, @action, [multipart: true], fn f ->
+  .well
+    .form-group
+      = show_logo(@company, :thumb, "thumbnail")
+      = file_input f, :logo, class: "from-control"
+      = error_tag f, :logo
+    
+    .form-group
+      = label f, :public_name, show_attribute(:public_name), class: "control-label"
+      = text_input f, :public_name, class: "form-control", placeholder: show_attribute(:public_name)
+      = error_tag f, :public_name
+    
+    .form-group
+      = label f, :name, show_attribute(:name), class: "control-label"
+      = text_input f, :name, class: "form-control", placeholder: show_attribute(:name), required: true
+      = error_tag f, :name
+    
+    .form-group
+      = label f, :location, show_attribute(:location), class: "control-label"
+      = text_input f, :location, class: "form-control", placeholder: show_attribute(:location), required: true
+      = error_tag f, :location
+    
+    .form-group
+      = label f, :url, show_attribute(:url, :upcase), class: "control-label"
+      = text_input f, :url, class: "form-control", placeholder: show_attribute(:url, :upcase)
+      = error_tag f, :url
+      
+    .form-group
+      = label f, :about, show_attribute(:about), class: "control-label"
+      = textarea f, :about, class: "form-control", placeholder: show_attribute(:about)
+      = error_tag f, :about
+
+    .form-group
+      = label f, :visible, show_attribute(:visible), class: "control-label"
+      = select f, :visible, [{dgettext("company", "Public"), 1}, {dgettext("company", "Private"), 0}], class: "form-control"
+
+    .form-group
+      = submit gettext("Create"), class: "btn btn-primary"
