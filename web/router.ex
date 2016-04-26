@@ -13,6 +13,12 @@ defmodule Exbugs.Router do
     plug :accepts, ["json"]
   end
 
+  scope "/api", Exbugs.API do
+    pipe_through :api
+
+    get "/users/autocomplete", UserController, :autocomplete
+  end
+
   scope "/", Exbugs do
     pipe_through :browser
 
@@ -26,7 +32,7 @@ defmodule Exbugs.Router do
 
     # Companies
     get "/companies/my", CompanyController, :my
-    
+
     resources "/companies", CompanyController, param: "name" do
       resources "/members", MemberController, except: [:show]
       resources "/boards", BoardController, except: [:index], param: "name"
@@ -42,9 +48,4 @@ defmodule Exbugs.Router do
     get "/settings/profile", Setting.ProfileController, :edit
     put "/settings/profile", Setting.ProfileController, :update
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", Exbugs do
-  #   pipe_through :api
-  # end
 end

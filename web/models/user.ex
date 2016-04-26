@@ -6,6 +6,8 @@ defmodule Exbugs.User do
 
   @default_language "en"
 
+  @derive {Poison.Encoder, only: [:username]}
+
   schema "users" do
     has_many :members, Exbugs.Member, on_delete: :delete_all
     has_many :companies, Exbugs.Company, on_delete: :delete_all
