@@ -3,13 +3,15 @@ defmodule Exbugs.Member do
   use Arc.Ecto.Model
   import Ecto.Query
 
+  alias Exbugs.{Repo, Member}
+
   schema "members" do
     belongs_to :company, Exbugs.Company
     belongs_to :user, Exbugs.User
 
     field :mark, :string
     field :role, :string
-    
+
     timestamps
   end
 
@@ -29,5 +31,12 @@ defmodule Exbugs.Member do
     |> cast(params, @update_required_fields, @update_optional_fields)
     |> validate_inclusion(:role, ~w(member admin))
     |> validate_length(:mark, max: 50)
+  end
+
+  def select_and_limit(company, limit) do
+    query = from m in Member,
+      where: m.company_id == ^company.id,
+      limit: ^limit
+    Repo.all(query) |> Repo.preload([:user])
   end
 end

@@ -63,8 +63,7 @@ defmodule Exbugs.CompanyController do
     company = Repo.get_by!(Company, name: name)
       |> Repo.preload([:boards])
 
-    query = Repo.all(assoc(company, :members), limit: 9)
-    members = Repo.preload(query, [:user])
+    members = Member.select_and_limit(company, 8)
 
     member_changeset = Member.create_changeset(%Member{})
 
