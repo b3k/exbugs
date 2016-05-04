@@ -7,6 +7,9 @@
 # Generate on crash by the VM
 erl_crash.dump
 
+# npm logs
+/npm-debug.log
+
 # Static artifacts
 /node_modules
 
