@@ -9,6 +9,11 @@ defmodule Exbugs.Router do
     plug :put_secure_browser_headers
   end
 
+  pipeline :browser_session do
+    plug Guardian.Plug.VerifySession
+    plug Guardian.Plug.LoadResource
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
@@ -20,7 +25,7 @@ defmodule Exbugs.Router do
   end
 
   scope "/", Exbugs do
-    pipe_through :browser
+    pipe_through [:browser, :browser_session]
 
     get "/", DashboardController, :index
 

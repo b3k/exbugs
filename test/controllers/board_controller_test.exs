@@ -1,66 +1,85 @@
 defmodule Exbugs.BoardControllerTest do
   use Exbugs.ConnCase
 
-  alias Exbugs.Board
-  @valid_attrs %{about: "some content", name: "some content"}
-  @invalid_attrs %{}
+  alias Exbugs.{Repo, Board}
+  import Exbugs.Factory
 
-  test "lists all entries on index", %{conn: conn} do
-    conn = get conn, board_path(conn, :index)
-    assert html_response(conn, 200) =~ "Listing boards"
+  @valid_attrs %{about: "some content", name: "name"}
+  @invalid_attrs %{name: "name with spaces"}
+
+  setup do
+    user = create(:user)
+    company = create(:company, user: user)
+    _member = create(:member, user: user, company: company, role: "creator")
+    {:ok, conn: conn(), user: user, company: company}
   end
 
-  test "renders form for new resources", %{conn: conn} do
-    conn = get conn, board_path(conn, :new)
+  test "renders form for new resources", %{conn: conn, user: user, company: company} do
+    conn = guardian_login(user)
+    |> get(company_board_path(conn, :new, company.name))
+
     assert html_response(conn, 200) =~ "New board"
   end
 
-  test "creates resource and redirects when data is valid", %{conn: conn} do
-    conn = post conn, board_path(conn, :create), board: @valid_attrs
-    assert redirected_to(conn) == board_path(conn, :index)
+  test "creates resource and redirects when data is valid", %{conn: conn, user: user, company: company} do
+    conn = guardian_login(user) |>
+    post(company_board_path(conn, :create, company.name), board: @valid_attrs)
+
+    assert redirected_to(conn) == company_path(conn, :show, company.name)
     assert Repo.get_by(Board, @valid_attrs)
   end
 
-  test "does not create resource and renders errors when data is invalid", %{conn: conn} do
-    conn = post conn, board_path(conn, :create), board: @invalid_attrs
+  test "does not create resource and renders errors when data is invalid", %{conn: conn, user: user, company: company} do
+    conn = guardian_login(user)
+    |> post(company_board_path(conn, :create, company.name), board: @invalid_attrs)
+
     assert html_response(conn, 200) =~ "New board"
   end
 
-  test "shows chosen resource", %{conn: conn} do
-    board = Repo.insert! %Board{}
-    conn = get conn, board_path(conn, :show, board)
+  test "shows chosen resource", %{conn: conn, user: user, company: company} do
+    board = create(:board, company: company)
+
+    conn = guardian_login(user)
+    |> get(company_board_path(conn, :show, company.name, board.name))
+
     assert html_response(conn, 200) =~ "Show board"
   end
 
-  test "renders page not found when id is nonexistent", %{conn: conn} do
-    assert_error_sent 404, fn ->
-      get conn, board_path(conn, :show, -1)
-    end
-  end
+  test "renders form for editing chosen resource", %{conn: conn, user: user, company: company} do
+    board = create(:board, company: company)
 
-  test "renders form for editing chosen resource", %{conn: conn} do
-    board = Repo.insert! %Board{}
-    conn = get conn, board_path(conn, :edit, board)
+    conn = guardian_login(user)
+    |> get(company_board_path(conn, :edit, company.name, board.name))
+
     assert html_response(conn, 200) =~ "Edit board"
   end
 
-  test "updates chosen resource and redirects when data is valid", %{conn: conn} do
-    board = Repo.insert! %Board{}
-    conn = put conn, board_path(conn, :update, board), board: @valid_attrs
-    assert redirected_to(conn) == board_path(conn, :show, board)
+  test "updates chosen resource and redirects when data is valid", %{conn: conn, user: user, company: company} do
+    board = create(:board, company: company)
+
+    conn = guardian_login(user)
+    |> put(company_board_path(conn, :update, company.name, board.name), board: @valid_attrs)
+
+    assert redirected_to(conn) == company_path(conn, :show, company.name)
     assert Repo.get_by(Board, @valid_attrs)
   end
 
-  test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
-    board = Repo.insert! %Board{}
-    conn = put conn, board_path(conn, :update, board), board: @invalid_attrs
+  test "does not update chosen resource and renders errors when data is invalid", %{conn: conn, user: user, company: company} do
+    board = create(:board, company: company)
+
+    conn = guardian_login(user)
+    |> put(company_board_path(conn, :update, company.name, board.name), board: @invalid_attrs)
+
     assert html_response(conn, 200) =~ "Edit board"
   end
 
-  test "deletes chosen resource", %{conn: conn} do
-    board = Repo.insert! %Board{}
-    conn = delete conn, board_path(conn, :delete, board)
-    assert redirected_to(conn) == board_path(conn, :index)
+  test "deletes chosen resource", %{conn: conn, user: user, company: company} do
+    board = create(:board, company: company)
+
+    conn = guardian_login(user)
+    |> delete(company_board_path(conn, :delete, company.name, board.name))
+
+    assert redirected_to(conn) == company_path(conn, :show, company.name)
     refute Repo.get(Board, board.id)
   end
 end

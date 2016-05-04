@@ -1,66 +1,72 @@
 defmodule Exbugs.MemberControllerTest do
   use Exbugs.ConnCase
 
-  alias Exbugs.Member
-  @valid_attrs %{}
-  @invalid_attrs %{}
+  alias Exbugs.{Repo, Member, User}
+  import Exbugs.Factory
 
-  test "lists all entries on index", %{conn: conn} do
-    conn = get conn, member_path(conn, :index)
-    assert html_response(conn, 200) =~ "Listing members"
+  setup do
+    user = create(:user)
+    company = create(:company, user: user)
+    member = create(:member, user: user, company: company, role: "creator")
+    {:ok, conn: conn(), user: user, company: company, member: member}
   end
 
-  test "renders form for new resources", %{conn: conn} do
-    conn = get conn, member_path(conn, :new)
-    assert html_response(conn, 200) =~ "New member"
+  test "lists all entries on index", %{conn: conn, user: user, company: company} do
+    conn = guardian_login(user)
+    |> get(company_member_path(conn, :index, company.name))
+
+    assert html_response(conn, 200) =~ company.name <> " - Members"
   end
 
-  test "creates resource and redirects when data is valid", %{conn: conn} do
-    conn = post conn, member_path(conn, :create), member: @valid_attrs
-    assert redirected_to(conn) == member_path(conn, :index)
-    assert Repo.get_by(Member, @valid_attrs)
+  test "creates resource and redirects when data is valid", %{conn: conn, user: user, company: company} do
+    another_user = create(:user)
+
+    conn = guardian_login(user)
+    |> post(company_member_path(conn, :create, company.name), member: %{username: another_user.username})
+
+    assert redirected_to(conn) == company_path(conn, :show, company.name)
+    assert Repo.get_by(Member, user_id: another_user.id)
   end
 
-  test "does not create resource and renders errors when data is invalid", %{conn: conn} do
-    conn = post conn, member_path(conn, :create), member: @invalid_attrs
-    assert html_response(conn, 200) =~ "New member"
+  test "renders form for editing chosen resource", %{conn: conn, user: user, company: company} do
+    member = create(:member, company: company, user: create(:user))
+    |> Repo.preload(:user)
+
+    conn = guardian_login(user)
+    |> get(company_member_path(conn, :edit, company.name, member))
+
+    assert html_response(conn, 200) =~ "Edit " <> member.user.username
   end
 
-  test "shows chosen resource", %{conn: conn} do
-    member = Repo.insert! %Member{}
-    conn = get conn, member_path(conn, :show, member)
-    assert html_response(conn, 200) =~ "Show member"
+  test "updates chosen resource and redirects when data is valid", %{conn: conn, user: user, company: company} do
+    another_user = create(:user)
+    member = create(:member, user: another_user, company: company)
+
+    conn = guardian_login(user)
+    |> put(company_member_path(conn, :update, company.name, member), member: %{mark: "mark", role: "member"})
+
+    assert redirected_to(conn) == company_member_path(conn, :index, company.name)
+    assert Repo.get_by(Member, user_id: another_user.id)
   end
 
-  test "renders page not found when id is nonexistent", %{conn: conn} do
-    assert_error_sent 404, fn ->
-      get conn, member_path(conn, :show, -1)
-    end
+  test "does not update chosen resource and renders errors when data is invalid", %{conn: conn, user: user, company: company} do
+    another_user = create(:user)
+    member = create(:member, user: another_user, company: company)
+
+    conn = guardian_login(user)
+    |> put(company_member_path(conn, :update, company.name, member), member: %{mark: "some loooooooooooooooooong mark", role: "member"})
+
+    assert html_response(conn, 200) =~ "Edit " <> another_user.username
   end
 
-  test "renders form for editing chosen resource", %{conn: conn} do
-    member = Repo.insert! %Member{}
-    conn = get conn, member_path(conn, :edit, member)
-    assert html_response(conn, 200) =~ "Edit member"
-  end
+  test "deletes chosen resource", %{conn: conn, user: user, company: company} do
+    another_user = create(:user)
+    member = create(:member, user: another_user, company: company)
 
-  test "updates chosen resource and redirects when data is valid", %{conn: conn} do
-    member = Repo.insert! %Member{}
-    conn = put conn, member_path(conn, :update, member), member: @valid_attrs
-    assert redirected_to(conn) == member_path(conn, :show, member)
-    assert Repo.get_by(Member, @valid_attrs)
-  end
+    conn = guardian_login(user)
+    |> delete(company_member_path(conn, :delete, company.name, member))
 
-  test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
-    member = Repo.insert! %Member{}
-    conn = put conn, member_path(conn, :update, member), member: @invalid_attrs
-    assert html_response(conn, 200) =~ "Edit member"
-  end
-
-  test "deletes chosen resource", %{conn: conn} do
-    member = Repo.insert! %Member{}
-    conn = delete conn, member_path(conn, :delete, member)
-    assert redirected_to(conn) == member_path(conn, :index)
+    assert redirected_to(conn) == company_member_path(conn, :index, company.name)
     refute Repo.get(Member, member.id)
   end
 end

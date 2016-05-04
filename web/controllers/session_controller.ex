@@ -1,6 +1,7 @@
 defmodule Exbugs.SessionController do
   use Exbugs.Web, :controller
   import Exbugs.Redirects, only: [redirect_if_signed_in: 2]
+  alias Exbugs.Session
 
   plug :redirect_if_signed_in when action in [:new, :create]
   plug :put_layout, "sign.html"
@@ -11,10 +12,10 @@ defmodule Exbugs.SessionController do
   end
 
   def create(conn, %{"session" => session_params}) do
-    case Exbugs.Session.login(session_params, Exbugs.Repo) do
+    case Session.login(session_params, Exbugs.Repo) do
       {:ok, user} ->
         conn
-        |> put_session(:current_user, user.id)
+        |> Guardian.Plug.sign_in(user)
         |> put_flash(:info, dgettext("sign", "Logged in"))
         |> redirect(to: "/")
       :error ->
@@ -25,9 +26,8 @@ defmodule Exbugs.SessionController do
     end
   end
 
-  def delete(conn, _oarams) do
-    conn
-    |> delete_session(:current_user)
+  def delete(conn, _params) do
+    Guardian.Plug.sign_out(conn)
     |> put_flash(:info, dgettext("sign", "Logged out"))
     |> redirect(to: "/")
   end

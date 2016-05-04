@@ -5,6 +5,6 @@ li.dropdown
     = dgettext("companies", "Companies")
     span.caret
   ul.dropdown-menu
-    li = link dgettext("companies", "All companies"), to: company_path(@conn, :index)
-    li = link dgettext("companies", "My companies"), to: company_path(@conn, :my)
+    li = link dgettext("companies", "All"), to: company_path(@conn, :index)
+    li = link dgettext("companies", "My"), to: company_path(@conn, :my)
     li = link dgettext("companies", "Create new"), to: company_path(@conn, :new)

@@ -30,7 +30,7 @@ defmodule Exbugs.Member do
     model
     |> cast(params, @update_required_fields, @update_optional_fields)
     |> validate_inclusion(:role, ~w(member admin))
-    |> validate_length(:mark, max: 50)
+    |> validate_length(:mark, max: 25)
   end
 
   def select_and_limit(company, limit) do

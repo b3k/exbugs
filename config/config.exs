@@ -39,3 +39,11 @@ config :exbugs, Exbugs.Gettext, default_locale: "en"
 # Configure scrivener_html
 config :scrivener_html,
   routes_helper: Exbugs.Router.Helpers
+
+# Configure guardian
+config :guardian, Guardian,
+  issuer: "Exbugs",
+  ttl: { 30, :days },
+  verify_issuer: true,
+  secret_key: "lksdjowiurowieurlkjsdlwwer",
+  serializer: Exbugs.GuardianSerializer

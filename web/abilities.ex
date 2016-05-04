@@ -14,6 +14,7 @@ defmodule Exbugs.Abilities do
   @doc """
   Manage companies (update, remove, etc)
   """
+  def can_manage_company?(nil, _), do: false
   def can_manage_company?(user, company) do
     case Company.has_member?(company, user) do
       true ->
@@ -35,6 +36,7 @@ defmodule Exbugs.Abilities do
   @doc """
   Manage members (add, remove, update, etc)
   """
+  def can_manage_members?(nil, _), do: false
   def can_manage_members?(user, company) do
     case Company.has_member?(company, user) do
       true ->

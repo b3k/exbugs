@@ -17,7 +17,7 @@
     
     .form-group
       = label f, :location, show_attribute(:location), class: "control-label"
-      = text_input f, :location, class: "form-control", placeholder: show_attribute(:location), required: true
+      = text_input f, :location, class: "form-control", placeholder: show_attribute(:location)
       = error_tag f, :location
     
     .form-group
@@ -35,4 +35,4 @@
       = select f, :visible, [{dgettext("company", "Public"), 1}, {dgettext("company", "Private"), 0}], class: "form-control"
 
     .form-group
-      = submit gettext("Create"), class: "btn btn-primary"
+      = submit gettext("Update"), class: "btn btn-primary"

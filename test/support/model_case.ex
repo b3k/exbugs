@@ -17,7 +17,7 @@ defmodule Exbugs.ModelCase do
   using do
     quote do
       alias Exbugs.Repo
-      import Ecto.Model
+      import Ecto.Model, except: [build: 2]
       import Ecto.Query, only: [from: 2]
       import Exbugs.ModelCase
     end

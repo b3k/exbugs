@@ -7,7 +7,7 @@ defmodule Exbugs.CompanyController do
   import Exbugs.Redirects, only: [redirect_unless_signed_in: 2, redirect_unless: 2, redirect_if_private: 2]
 
   plug :redirect_unless_signed_in when not(action in [:index, :show])
-  plug :redirect_if_private when not(action in [:index, :my, :new, :create])
+  plug :redirect_if_private when action in [:show]
   plug :scrub_params, "company" when action in [:create, :update]
   plug :authorize when not(action in [:index, :my, :show, :new, :create])
 

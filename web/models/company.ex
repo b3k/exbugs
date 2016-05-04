@@ -5,7 +5,7 @@ defmodule Exbugs.Company do
   import Ecto.Query
   import Exbugs.Gettext
 
-  alias Exbugs.{Company, Member, User}
+  alias Exbugs.{Company, Member, User, Repo}
 
   schema "companies" do
     has_many :members, Exbugs.Member, on_delete: :delete_all
@@ -89,13 +89,13 @@ defmodule Exbugs.Company do
         "member"
     end
 
-    Exbugs.Repo.insert(%Member{company_id: company.id, user_id: company.user_id, role: role})
+    Repo.insert(%Member{company_id: company.id, user_id: company.user_id, role: role})
   end
 
   def add_member(company, user) do
     case {has_member?(company, user), User.has_user?(user)} do
       {false, true} ->
-        Exbugs.Repo.insert(%Member{company_id: company.id, user_id: user.id, role: "member"})
+        Repo.insert(%Member{company_id: company.id, user_id: user.id, role: "member"})
       _ ->
         false
     end
@@ -110,7 +110,7 @@ defmodule Exbugs.Company do
   end
 
   def has_member?(company, user) do
-    member = Exbugs.Repo.get_by(assoc(company, :members), user_id: user.id)
+    member = Repo.get_by(Member, %{company_id: company.id, user_id: user.id})
 
     case member do
       nil ->
@@ -125,6 +125,6 @@ defmodule Exbugs.Company do
   end
 
   def members_count(company) do
-    Exbugs.Repo.all(assoc(company, :members)) |> Enum.count
+    Repo.all(assoc(company, :members)) |> Enum.count
   end
 end

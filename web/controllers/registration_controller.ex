@@ -23,7 +23,7 @@ defmodule Exbugs.RegistrationController do
 
         conn
         |> assign(:page_title, dgettext("sign", "Sign up"))
-        |> put_session(:current_user, user.id)
+        |> Guardian.Plug.sign_in(user)
         |> put_flash(:info, dgettext("sign", "Your account was created"))
         |> redirect(to: "/")
       {:error, changeset} ->
