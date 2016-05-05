@@ -40,7 +40,8 @@ defmodule Exbugs.BoardController do
   end
 
   def show(conn, %{"name" => name}) do
-    board = Repo.get_by!(Board, name: name)
+    company = Repo.get_by(Company, name: conn.params["company_name"])
+    board = Repo.get_by!(Board, %{name: name, company_id: company.id})
 
     render conn, "show.html",
       page_title: dgettext("boards", "New board"),
@@ -48,19 +49,20 @@ defmodule Exbugs.BoardController do
   end
 
   def edit(conn, %{"name" => name}) do
-    board = Repo.get_by!(Board, name: name)
-      |> Repo.preload([:company])
+    company = Repo.get_by(Company, name: conn.params["company_name"])
+    board = Repo.get_by!(Board, %{name: name, company_id: company.id})
 
     changeset = Board.changeset(board)
     render conn, "edit.html",
       page_title: dgettext("boards", "Edit board"),
       board: board,
+      company: company,
       changeset: changeset
   end
 
   def update(conn, %{"name" => name, "board" => board_params}) do
-    board = Repo.get_by!(Board, name: name)
-      |> Repo.preload([:company])
+    company = Repo.get_by(Company, name: conn.params["company_name"])
+    board = Repo.get_by!(Board, %{name: name, company_id: company.id})
 
     changeset = Board.changeset(board, board_params)
 
@@ -68,24 +70,25 @@ defmodule Exbugs.BoardController do
       {:ok, board} ->
         conn
         |> put_flash(:info, gettext("%{attribute} updated successfully", [attribute: "Board"]))
-        |> redirect(to: company_path(conn, :show, board.company.name))
+        |> redirect(to: company_path(conn, :show, company.name))
       {:error, changeset} ->
         render conn, "edit.html",
           page_title: dgettext("boards", "Edit board"),
           board: board,
+          company: company,
           changeset: changeset
     end
   end
 
   def delete(conn, %{"name" => name}) do
-    board = Repo.get_by!(Board, name: name)
-      |> Repo.preload([:company])
+    company = Repo.get_by(Company, name: conn.params["company_name"])
+    board = Repo.get_by!(Board, %{name: name, company_id: company.id})
 
     Repo.delete!(board)
 
     conn
     |> put_flash(:info, gettext("%{attribute} deleted successfully", [attribute: "Board"]))
-    |> redirect(to: company_path(conn, :show, board.company.name))
+    |> redirect(to: company_path(conn, :show, company.name))
   end
 
   defp authorize(conn, _params) do

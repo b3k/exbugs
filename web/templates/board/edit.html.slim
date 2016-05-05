@@ -3,4 +3,4 @@
     .col-md-12
       h2 = assigns[:page_title]
       
-      = render "_form.html", changeset: @changeset, action: company_board_path(@conn, :update, @board.company.name, @board.name)
+      = render "_form.html", changeset: @changeset, action: company_board_path(@conn, :update, @company.name, @board.name)

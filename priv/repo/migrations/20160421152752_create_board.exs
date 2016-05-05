@@ -9,7 +9,5 @@ defmodule Exbugs.Repo.Migrations.CreateBoard do
 
       timestamps
     end
-
-    create unique_index(:boards, [:name])
   end
 end

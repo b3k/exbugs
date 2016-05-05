@@ -59,7 +59,7 @@ defmodule Exbugs.User do
   def has_user?(user) do
     case user do
       nil -> false
-      user -> true
+      _ -> true
     end
   end
 
