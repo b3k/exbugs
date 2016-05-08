@@ -1,7 +1,7 @@
 defmodule Exbugs.MemberControllerTest do
   use Exbugs.ConnCase
 
-  alias Exbugs.{Repo, Member, User}
+  alias Exbugs.{Repo, Member}
   import Exbugs.Factory
 
   setup do

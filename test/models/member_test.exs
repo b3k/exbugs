@@ -46,7 +46,7 @@ defmodule Exbugs.MemberTest do
 
     for _ <- 0..10 do
       user = create(:user)
-      member = create(:member, company: company, user: user)
+      _member = create(:member, company: company, user: user)
     end
 
     assert 5 = Member.select_and_limit(company, 5) |> Enum.count

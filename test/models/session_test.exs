@@ -9,7 +9,7 @@ defmodule Exbugs.SessionTest do
 
   test "login when user is exists" do
     user = create(:user)
-    assert {:ok, user} = Session.login(%{"email" => user.email, "password" => "password"})
+    assert {:ok, _user} = Session.login(%{"email" => user.email, "password" => "password"})
   end
 
   test "login when user in not exists" do

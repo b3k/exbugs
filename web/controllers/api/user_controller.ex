@@ -4,10 +4,13 @@ defmodule Exbugs.API.UserController do
   alias Exbugs.{Repo, User}
 
   def autocomplete(conn, _params) do
-    param = conn.params["query"] |> String.downcase
+    query = conn.params["query"] || ""
+      |> String.downcase
 
-    users = from(u in User, where: like(u.username, ^"#{param}%"))
-      |> Repo.all
+    users = case query do
+      "" -> []
+      query -> from(u in User, where: like(u.username, ^"#{query}%")) |> Repo.all
+    end
 
     render conn, users: users
   end

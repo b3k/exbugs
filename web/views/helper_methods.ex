@@ -1,6 +1,5 @@
 defmodule Exbugs.HelperMethods do
   import Phoenix.HTML.Tag
-  import Exbugs.Gettext
 
   def show_attribute(attr, :upcase), do: show_attribute(attr) |> String.upcase
   def show_attribute(attr) do
