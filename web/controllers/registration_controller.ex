@@ -17,7 +17,7 @@ defmodule Exbugs.RegistrationController do
   def create(conn, %{"user" => user_params}) do
     changeset = User.create_changeset(%User{}, user_params)
 
-    case Exbugs.Registration.create(changeset, Exbugs.Repo) do
+    case Exbugs.Registration.create(changeset) do
       {:ok, changeset} ->
         user = Repo.get_by(User, email: changeset.email)
 

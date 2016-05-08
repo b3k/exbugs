@@ -30,7 +30,7 @@ defmodule Exbugs.Factory do
 
   def factory(:board) do
     %Board{
-      name: sequence(:name, &"company#{&1}"),
+      name: sequence(:name, &"boardcompany#{&1}"),
       company: build(:company)
     }
   end

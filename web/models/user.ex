@@ -70,8 +70,4 @@ defmodule Exbugs.User do
       @default_language
     end
   end
-
-  def change_role(user) do
-    user
-  end
 end

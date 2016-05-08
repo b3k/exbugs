@@ -1,8 +1,8 @@
 defmodule Exbugs.Session do
-  alias Exbugs.User
+  alias Exbugs.{Repo, User}
 
-  def login(params, repo) do
-    user = repo.get_by(User, email: String.downcase(params["email"]))
+  def login(params) do
+    user = Repo.get_by(User, email: String.downcase(params["email"]))
     case authenticate(user, params["password"]) do
       true -> {:ok, user}
       _    -> :error

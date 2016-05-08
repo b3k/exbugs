@@ -67,7 +67,7 @@ defmodule Exbugs.BoardController do
     changeset = Board.changeset(board, board_params)
 
     case Repo.update(changeset) do
-      {:ok, board} ->
+      {:ok, _board} ->
         conn
         |> put_flash(:info, gettext("%{attribute} updated successfully", [attribute: "Board"]))
         |> redirect(to: company_path(conn, :show, company.name))

@@ -3,16 +3,24 @@ defmodule Exbugs.BoardTest do
 
   alias Exbugs.Board
 
-  @valid_attrs %{about: "some content", name: "some content"}
+  import Exbugs.Factory
+
+  @valid_attrs %{name: "name", about: "About info"}
   @invalid_attrs %{}
 
-  # test "changeset with valid attributes" do
-  #   changeset = Board.changeset(%Board{}, @valid_attrs)
-  #   assert changeset.valid?
-  # end
-  #
-  # test "changeset with invalid attributes" do
-  #   changeset = Board.changeset(%Board{}, @invalid_attrs)
-  #   refute changeset.valid?
-  # end
+  test "changeset with valid attributes" do
+    company = create(:company, user: create(:user))
+    board = Ecto.Model.build(company, :boards)
+    changeset = Board.changeset(board, @valid_attrs)
+
+    assert changeset.valid?
+  end
+
+  test "changeset with invalid attributes" do
+    company = create(:company, user: create(:user))
+    board = Ecto.Model.build(company, :boards)
+    changeset = Board.changeset(board, @invalid_attrs)
+
+    refute changeset.valid?
+  end
 end

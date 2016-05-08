@@ -15,16 +15,17 @@ defmodule Exbugs.Member do
     timestamps
   end
 
-  @create_required_fields ~w()
+  @create_required_fields ~w(user_id company_id role)
   @create_optional_fields ~w()
 
   def create_changeset(model, params \\ :empty) do
     model
     |> cast(params, @create_required_fields, @create_optional_fields)
+    |> validate_inclusion(:role, ~w(member admin))
   end
 
-  @update_required_fields ~w()
-  @update_optional_fields ~w(mark role)
+  @update_required_fields ~w(role)
+  @update_optional_fields ~w(mark)
 
   def update_changeset(model, params \\ :empty) do
     model

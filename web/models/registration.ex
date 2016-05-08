@@ -1,10 +1,12 @@
 defmodule Exbugs.Registration do
   import Ecto.Changeset, only: [put_change: 3]
 
-  def create(changeset, repo) do
+  alias Exbugs.Repo
+
+  def create(changeset) do
     changeset
     |> put_change(:crypted_password, hashed_password(changeset.params["password"]))
-    |> repo.insert()
+    |> Repo.insert
   end
 
   defp hashed_password(password) do

@@ -12,7 +12,7 @@ defmodule Exbugs.SessionController do
   end
 
   def create(conn, %{"session" => session_params}) do
-    case Session.login(session_params, Exbugs.Repo) do
+    case Session.login(session_params) do
       {:ok, user} ->
         conn
         |> Guardian.Plug.sign_in(user)
