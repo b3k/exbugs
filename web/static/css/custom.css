@@ -84,3 +84,5 @@ body { padding-top: 70px; }
   margin-top: 40px;
   border-top: 1px solid #eee;
 }
+
+#ticket_body {overflow:scroll; max-height:300px}

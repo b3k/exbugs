@@ -40,7 +40,9 @@ defmodule Exbugs.Router do
 
     resources "/companies", CompanyController, param: "name" do
       resources "/members", MemberController, except: [:show]
-      resources "/boards", BoardController, except: [:index], param: "name"
+      resources "/boards", BoardController, except: [:index, :show], param: "name" do
+        resources "/tickets", TicketController
+      end
     end
 
     # Dashboard

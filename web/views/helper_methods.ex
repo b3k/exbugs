@@ -1,5 +1,6 @@
 defmodule Exbugs.HelperMethods do
   import Phoenix.HTML.Tag
+  import Phoenix.HTML.Link
 
   def show_attribute(attr, :upcase), do: show_attribute(attr) |> String.upcase
   def show_attribute(attr) do
@@ -10,6 +11,16 @@ defmodule Exbugs.HelperMethods do
 
     Gettext.dgettext(Exbugs.Gettext, "attributes", attr)
     |> String.capitalize
+  end
+
+  def show_tag_link(tag, path) do
+    icon = content_tag(
+      :span,
+      "",
+      class: "span glyphicon glyphicon-tag"
+    )
+
+    link [icon, tag, " "], to: path <> "?tag=" <> tag
   end
 
   def correct_image_path(path) do

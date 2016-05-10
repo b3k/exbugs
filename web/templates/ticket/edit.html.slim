@@ -1,0 +1,3 @@
+h2 Edit ticket
+
+= render "form.html", changeset: @changeset, action: company_board_ticket_path(@conn, :update, @board.company.name, @board.name, @ticket)

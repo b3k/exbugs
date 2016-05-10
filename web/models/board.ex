@@ -7,6 +7,7 @@ defmodule Exbugs.Board do
 
   schema "boards" do
     belongs_to :company, Exbugs.Company
+    has_many :tickets, Exbugs.Ticket, on_delete: :delete_all
 
     field :name, :string
     field :about, :string
@@ -38,5 +39,12 @@ defmodule Exbugs.Board do
         _board -> [{field, options[:message]}]
       end
     end
+  end
+
+  def for_select(company) do
+    company = company |> Repo.preload(:boards)
+
+    company.boards
+    |> Enum.map(&({&1.name, &1.id}))
   end
 end

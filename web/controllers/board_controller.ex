@@ -39,15 +39,6 @@ defmodule Exbugs.BoardController do
     end
   end
 
-  def show(conn, %{"name" => name}) do
-    company = Repo.get_by(Company, name: conn.params["company_name"])
-    board = Repo.get_by!(Board, %{name: name, company_id: company.id})
-
-    render conn, "show.html",
-      page_title: dgettext("boards", "New board"),
-      board: board
-  end
-
   def edit(conn, %{"name" => name}) do
     company = Repo.get_by(Company, name: conn.params["company_name"])
     board = Repo.get_by!(Board, %{name: name, company_id: company.id})

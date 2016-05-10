@@ -2,7 +2,7 @@
   .panel.panel-default
     .panel-body
       .col-xs-4 
-        = link board.name, to: company_board_path(@conn, :show, @company.name, board.name)
+        = link board.name, to: company_board_ticket_path(@conn, :index, @company.name, board.name)
         p.small = board.about
       
       = if can_manage_company?(current_user(@conn), @company) do

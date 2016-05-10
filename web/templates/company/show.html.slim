@@ -22,7 +22,7 @@
                   br
                   .well 
                     i = @company.about
-                
+
       = render Exbugs.CompanyView, "_boards.html", conn: @conn, boards: @boards, company: @company
       = if can_manage_company?(current_user(@conn), @company) do
         ul.list-inline

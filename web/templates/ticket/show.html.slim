@@ -1,0 +1,11 @@
+.container
+  .row
+    .col-md-8
+      h2 = @ticket.title
+      
+.container
+  .row
+    .col-md-8
+      .well = raw(@ticket.body)
+    .col-md-4
+      = render "_tags.html", conn: @conn, tags: @tags, ticket: @ticket, board: @board

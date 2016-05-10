@@ -1,0 +1,8 @@
+.panel.panel-default
+  .panel-heading = gettext("Tags")
+  .panel-body
+    = if Exbugs.Tag.has_tags?(Exbugs.Ticket, @ticket) do
+      = for tag <- @tags do
+        = show_tag_link(tag, company_board_ticket_path(@conn, :index, @board.company.name, @board.name))
+    - else
+      = render Exbugs.SharedView, "_placeholder.html"

@@ -1,7 +1,7 @@
 defmodule Exbugs.Factory do
   use ExMachina.Ecto, repo: Exbugs.Repo
 
-  alias Exbugs.{User, Company, Board, Member}
+  alias Exbugs.{User, Company, Board, Member, Ticket}
 
   def factory(:user) do
     %User{
@@ -32,6 +32,15 @@ defmodule Exbugs.Factory do
     %Board{
       name: sequence(:name, &"boardcompany#{&1}"),
       company: build(:company)
+    }
+  end
+
+  def factory(:ticket) do
+    %Ticket{
+      title: "Ticket title",
+      body: "Ticket body",
+      board: build(:board),
+      user: build(:user)
     }
   end
 end

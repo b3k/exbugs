@@ -1,0 +1,27 @@
+= form_for @changeset, @action, fn f ->
+  .well
+    .form-group
+      = label f, show_attribute(:board), class: "control-label"
+      = select f, :board_id, @boards, class: "form-control"
+      = error_tag f, :board_id
+    
+    .form-group
+      = label f, show_attribute(:title), class: "control-label"
+      = text_input f, :title, placeholder: show_attribute(:title), class: "form-control", required: true, autofocus: true
+      = error_tag f, :title
+      
+    .form-group
+      = label f, show_attribute(:body), class: "control-label"
+      = textarea f, :body, class: "form-control"
+      = error_tag f, :body
+      
+    .from-group
+      = label f, show_attribute(:tags), class: "control-label"
+      ul#ticket_tags_tag
+      = hidden_input f, :tags, placeholder: show_attribute(:tags), required: true
+      = error_tag f, :tags
+    
+    br 
+    
+    .form-group
+      = submit gettext("Create"), class: "btn btn-primary"

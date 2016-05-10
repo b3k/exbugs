@@ -11,6 +11,7 @@ defmodule Exbugs.User do
   schema "users" do
     has_many :members, Exbugs.Member, on_delete: :delete_all
     has_many :companies, Exbugs.Company, on_delete: :delete_all
+    has_many :tickets, Exbugs.Ticket, on_delete: :delete_all
 
     field :username, :string
     field :email, :string
@@ -21,7 +22,7 @@ defmodule Exbugs.User do
     field :language, :string, default: @default_language
     field :crypted_password, :string
     field :password, :string, virtual: true
-    field :role, :string
+    field :role, :string, default: "user"
 
     timestamps
   end

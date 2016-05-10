@@ -41,11 +41,12 @@ defmodule Exbugs.CompanyController do
   end
 
   def create(conn, %{"company" => company_params}) do
-    company = Ecto.Model.build(current_user(conn), :companies)
+    company = Ecto.build_assoc(current_user(conn), :companies)
     changeset = Company.create_changeset(company, company_params)
 
     case Repo.insert(changeset) do
       {:ok, company} ->
+        # TODO: Change when release Multi
         Company.add_member(company)
 
         conn

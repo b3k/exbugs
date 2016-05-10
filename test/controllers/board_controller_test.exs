@@ -36,15 +36,6 @@ defmodule Exbugs.BoardControllerTest do
     assert html_response(conn, 200) =~ "New board"
   end
 
-  test "shows chosen resource", %{conn: conn, user: user, company: company} do
-    board = create(:board, company: company)
-
-    conn = guardian_login(user)
-    |> get(company_board_path(conn, :show, company.name, board.name))
-
-    assert html_response(conn, 200) =~ "Show board"
-  end
-
   test "renders form for editing chosen resource", %{conn: conn, user: user, company: company} do
     board = create(:board, company: company)
 

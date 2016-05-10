@@ -9,7 +9,7 @@ defmodule Exbugs.Member do
     belongs_to :company, Exbugs.Company
     belongs_to :user, Exbugs.User
 
-    field :mark, :string
+    field :mark, :string, default: "member"
     field :role, :string
 
     timestamps

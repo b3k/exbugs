@@ -7,7 +7,7 @@ defmodule Exbugs.DashboardController do
     case logged_in?(conn) do
       true ->
         companies = Company.user_companies(current_user(conn), 3)
-        
+
 
         render conn, "index.html",
           page_title: dgettext("dashboard", "Dashboard"),
