@@ -10,4 +10,9 @@ defmodule Exbugs.HelperMethodsTest do
   test "show attribute when upcase param is selected" do
     assert "URL" = HelperMethods.show_attribute(:url, :upcase)
   end
+
+  test "show tag link" do
+    result = ~s(<a href="/tag?=test"><span class="span glyphicon glyphicon-tag">test </a>)
+    assert result = HelperMethods.show_tag_link("test", "/")
+  end
 end
